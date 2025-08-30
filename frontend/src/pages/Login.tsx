@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const Login: React.FC = () => {
@@ -25,9 +26,7 @@ const Login: React.FC = () => {
                 },
                 body: JSON.stringify({ username, password })
             });
-            if(response.status === 200){
-                toast.success('test login')
-            }else{
+            if(response.status !== 200){
                 toast.error(`${response.statusText} error has occurred`)
             }
         } catch (error) {
@@ -39,7 +38,7 @@ const Login: React.FC = () => {
     }
 
     return (
-        <div className="flex flex-col justify-center min-h-[70vh] gap-4">
+        <div className="flex flex-col justify-center gap-4 mb-0">
             <form className="flex flex-col justify-center gap-4" onSubmit={(form) => {
                 form.preventDefault();
                 tryLogin();
@@ -54,7 +53,13 @@ const Login: React.FC = () => {
                 </div>
                 <button className="bg-blue-500 text-white p-2 rounded-md w-28 mx-auto mt-6" type="submit" disabled={isLoading}>{isLoading ? 'Loading...' : 'Login'}</button>
             </form>
+
+            <div className="flex flex-col justify-center gap-4 mt-0">
+                <h5 className="justify-center mx-auto font-bold underline small-text"><Link to="/register">Don't have an account? Create one here!</Link></h5>            
+            </div>
         </div>
+
+
     );
 };
 
