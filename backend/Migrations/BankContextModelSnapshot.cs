@@ -23,6 +23,10 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("AccountStatus")
                         .HasColumnType("INTEGER");
 
