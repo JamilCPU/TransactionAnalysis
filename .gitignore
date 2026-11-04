@@ -1,0 +1,31 @@
+# secrets / env
+.env
+.env.*
+!.env.example
+*.keys
+
+# databases (never commit local bank data)
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# python
+__pycache__/
+*.pyc
+venv/
+
+# node
+node_modules/
+
+# build / editor
+dist/
+build/
+bin/
+obj/
+.vs/
+.idea/
+*.class
+target/
+.DS_Store
