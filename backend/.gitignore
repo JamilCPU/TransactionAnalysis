@@ -486,3 +486,15 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# secrets / env
+*.keys
+.env.*
+!.env.example
+
+# databases
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3

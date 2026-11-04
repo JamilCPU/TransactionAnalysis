@@ -1,40 +1,67 @@
-﻿# TransactionAnalysis
+# TransactionAnalysis
 
-Transaction Analysis is a full-stack banking application designed to simulate core financial operations such as user registration, account creation, secure login, and transaction management.
+A full-stack demo banking application that simulates core financial operations: user registration, secure login, account creation, deposits, withdrawals, transfers and transaction history. It was built to practise layered backend design (controllers, services, repositories, EF Core migrations) alongside a typed React front end. It uses a local SQLite database and holds no real financial data.
 
-The backend is built using ASP.NET Core (MVC pattern) with Entity Framework Core for data access and SQLite for local persistence.
+## Stack
 
-## HOW TO RUN LOCALLY
+- Backend: ASP.NET Core Web API on .NET 9, Entity Framework Core 9 with SQLite and migrations, JWT bearer authentication, DotNetEnv for `.env` loading
+- Frontend: React 19, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query, Axios
+- Tests: xUnit with `Microsoft.AspNetCore.Mvc.Testing` integration tests (`backend/test`)
 
-In order to get this application running locally you'll first need to clone the application
-and then open it up as a folder.
+## Running
 
-Open up two command line terminals pointing to the project's root directory
+You need the .NET 9 SDK and Node.js. Use two terminals from the repository root.
 
-One terminal will be used for running the frontend and the other will be used for the backend
+Backend (applies migrations and creates `backend/bank.db` on first start):
 
-On terminal one enter:
-  "cd backend"
-  "dotnet run"
-  This will fully start up the backend application
+```bash
+cd backend
+dotnet run
+```
 
-On the other terminal enter:
-  "cd frontend"
-  npm run dev
-  This will fully start up the frontend application.
-  (You may need to run npm install beforehand)
+Frontend:
 
-Ordinarily this would be enough to get things running but you'll also need to create a .env file within the frontend directory.
-This should tell the application where to point its URLs. The contents should look something like this
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-> VITE_API_BASE_URL = http://localhost:5000  \
-> VITE_FRONTEND_URL = http://localhost:5173
+Create `frontend/.env` so the app knows where the API lives:
 
-Once you do that, attempt to access the frontend to run the application as intended!
+```
+VITE_API_BASE_URL=http://localhost:5000
+VITE_FRONTEND_URL=http://localhost:5173
+```
 
+The backend allows CORS from `http://localhost:5173`. JWT settings come from the `Jwt` section of `backend/appsettings.json`; the key there is a placeholder, so override it with a long random value through the `Jwt__Key` environment variable (or a git-ignored `.env`) for anything beyond local use. `EnableDetailedLogging` in `.env` toggles verbose logging.
 
+Run the tests:
 
+```bash
+cd backend/test
+dotnet test
+```
 
+## API overview
 
+| Area | Routes |
+|------|--------|
+| Auth | `POST /api/auth/register`, `POST /api/auth/login` |
+| Users | `/api/users` (create, update, delete, get by id, info by username, list) |
+| Accounts | `/api/accounts` (new, get, list, delete, `{id}/deposit`, `{id}/withdraw`, `transfer`) |
+| Transactions | `/api/transactions` (new, get, list, delete, per-account history) |
 
+## Project layout
 
+```
+backend/
+  api/          controllers, DTOs, options
+  service/      business logic (interfaces + impl)
+  repository/   data access (interfaces + impl)
+  domain/ data/ domain models, EF Core context and entities
+  Migrations/   EF Core migrations
+  test/         integration tests
+frontend/src/   pages, components, contexts, API service
+Bank.sln
+```
